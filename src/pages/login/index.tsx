@@ -65,7 +65,7 @@ export default function Login() {
 
             if (valido) {
                 setTimeout(() => {
-                    if (email == 'shx.teste@gmail.com' && senha == '123456'){
+                    if (email == 'teste@gmail.com' && senha == '123456'){
                         setModalVisible(true);
 
                         setTimeout(() => {   
