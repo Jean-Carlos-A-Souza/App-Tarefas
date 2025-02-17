@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useRef, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react"; 
 import {
     Alert,
     Dimensions,
+    KeyboardAvoidingView,
+    Platform,
     StyleSheet,
     Text,
     TextInput,
@@ -40,8 +42,9 @@ export const AuthProviderList = (props: any) => {
         setDescricao('');
         setData('');
         modalizeRef.current?.close();
-        setRefreshList((prev) => !prev); // This is where refreshList is updated
+        setRefreshList((prev) => !prev);
     }
+
     const salvarTarefa = async () => {
         if (!titulo.trim() || !descricao.trim() || !data.trim()) {
             Alert.alert("Erro", "Preencha todos os campos antes de salvar.");
@@ -77,10 +80,9 @@ export const AuthProviderList = (props: any) => {
 
     const formatarData = (text: string) => {
         let cleaned = text.replace(/\D/g, '');
-
         cleaned = cleaned.slice(0, 8);
-
         let formatted = '';
+
         if (cleaned.length > 0) {
             formatted = cleaned.slice(0, 2);
         }
@@ -96,42 +98,47 @@ export const AuthProviderList = (props: any) => {
 
     const area = () => {
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.titulo}>Criação de tarefa</Text>
-                    <TouchableOpacity onPress={onClose}>
-                        <MaterialIcons name="close" size={35} color={themas.colors.red} />
-                    </TouchableOpacity>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.keyboardContainer}
+            >
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={styles.titulo}>Criação de tarefa</Text>
+                        <TouchableOpacity onPress={onClose}>
+                            <MaterialIcons name="close" size={35} color={themas.colors.red} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.content}>
+                        <Text style={styles.label}>Título</Text>  
+                        <TextInput
+                            style={styles.input}
+                            value={titulo}
+                            onChangeText={setTitulo}
+                        />
+                        <Text style={styles.label}>Descrição</Text>  
+                        <TextInput
+                            style={[styles.input, styles.descricaoInput]}
+                            value={descricao}
+                            onChangeText={setDescricao}
+                            multiline
+                            numberOfLines={4}
+                        />
+                        <Text style={styles.label}>Data</Text>
+                        <TextInput
+                            style={[styles.input, styles.dataInput]}
+                            value={data}
+                            onChangeText={formatarData} 
+                            placeholder="DD/MM/AAAA"
+                            keyboardType="numeric"
+                            maxLength={10} 
+                        />
+                        <TouchableOpacity style={styles.saveButton} onPress={salvarTarefa}>
+                            <Text style={styles.saveButtonText}>Salvar</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.content}>
-                    <Text style={styles.label}>Título</Text>  
-                    <TextInput
-                        style={styles.input}
-                        value={titulo}
-                        onChangeText={setTitulo}
-                    />
-                    <Text style={styles.label}>Descrição</Text>  
-                    <TextInput
-                        style={[styles.input, styles.descricaoInput]}
-                        value={descricao}
-                        onChangeText={setDescricao}
-                        multiline
-                        numberOfLines={4}
-                    />
-                    <Text style={styles.label}>Data</Text>
-                    <TextInput
-                        style={[styles.input, styles.dataInput]}
-                        value={data}
-                        onChangeText={formatarData} 
-                        placeholder="DD/MM/AAAA"
-                        keyboardType="numeric"
-                        maxLength={10} 
-                    />
-                    <TouchableOpacity style={styles.saveButton} onPress={salvarTarefa}>
-                        <Text style={styles.saveButtonText}>Salvar</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 
@@ -141,6 +148,13 @@ export const AuthProviderList = (props: any) => {
             <Modalize
                 ref={modalizeRef}
                 adjustToContentHeight={true}
+                keyboardAvoidingBehavior="padding"
+                modalStyle={styles.modalStyle}
+                onClosed={() => {
+                    setTitulo('');
+                    setDescricao('');
+                    setData('');
+                }}
             >
                 {area()} 
             </Modalize>
@@ -151,8 +165,16 @@ export const AuthProviderList = (props: any) => {
 export const useAuth = () => useContext(AuthContextList);
 
 export const styles = StyleSheet.create({
+    keyboardContainer: {
+        flex: 1,
+    },
+    modalStyle: {
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        paddingBottom: 20, 
+    },
     container: {
-        padding: 20,
+        padding: '5%',
     },
     header: {
         flexDirection: 'row',

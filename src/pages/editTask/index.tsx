@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { style } from './styles';
@@ -96,65 +96,67 @@ const EditTask = () => {
 
   return (
     <SafeAreaView style={style.safeContainer}>
-      <View style={style.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={style.backButton}>
-          <MaterialIcons
-                name="arrow-back-ios"
-                size={20}
-                color={themas.colors.botaoIntenso}
-          />
-          <Text style={style.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
-
-        <Text style={style.label}>Título</Text>
-        <TextInput 
-          style={style.input} 
-          value={title} 
-          onChangeText={setTitle} 
-        />
-
-        <Text style={style.label}>Descrição</Text>
-        <TextInput 
-          style={[style.input, style.textArea]} 
-          value={body} 
-          onChangeText={setBody} 
-          multiline 
-        />
-
-        <Text style={style.label}>Data</Text>
-        <TextInput
-          style={[style.input, {width: '40%'}]}
-          value={data}
-          onChangeText={formatarData} 
-          placeholder="DD/MM/AAAA"
-          keyboardType="numeric"
-          maxLength={10} 
-        />
-
-        <Text style={style.label}>Status</Text>
-        <View style={style.radioGroup}>
-          <TouchableOpacity 
-            style={[style.radioButton, status && style.radioConcluido]} 
-            onPress={() => setStatus(true)}
-          >
-            <Text>Concluída</Text>
+      <ScrollView>
+        <View style={style.container}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={style.backButton}>
+            <MaterialIcons
+                  name="arrow-back-ios"
+                  size={20}
+                  color={themas.colors.botaoIntenso}
+            />
+            <Text style={style.backButtonText}>Voltar</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={[style.radioButton, !status && style.radioNConcluido]} 
-            onPress={() => setStatus(false)}
-          >
-            <Text>Não Concluída</Text>
+
+          <Text style={style.label}>Título</Text>
+          <TextInput 
+            style={style.input} 
+            value={title} 
+            onChangeText={setTitle} 
+          />
+
+          <Text style={style.label}>Descrição</Text>
+          <TextInput 
+            style={[style.input, style.textArea]} 
+            value={body} 
+            onChangeText={setBody} 
+            multiline 
+          />
+
+          <Text style={style.label}>Data</Text>
+          <TextInput
+            style={[style.input, {width: '40%'}]}
+            value={data}
+            onChangeText={formatarData} 
+            placeholder="DD/MM/AAAA"
+            keyboardType="numeric"
+            maxLength={10} 
+          />
+
+          <Text style={style.label}>Status</Text>
+          <View style={style.radioGroup}>
+            <TouchableOpacity 
+              style={[style.radioButton, status && style.radioConcluido]} 
+              onPress={() => setStatus(true)}
+            >
+              <Text>Concluída</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[style.radioButton, !status && style.radioNConcluido]} 
+              onPress={() => setStatus(false)}
+            >
+              <Text>Não Concluída</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={style.saveButton} onPress={saveTask}>
+            <Text style={style.saveButtonText}>Salvar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={style.deleteButton} onPress={deleteTask}>
+            <Text style={style.deleteButtonText}>Excluir</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={style.saveButton} onPress={saveTask}>
-          <Text style={style.saveButtonText}>Salvar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={style.deleteButton} onPress={deleteTask}>
-          <Text style={style.deleteButtonText}>Excluir</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

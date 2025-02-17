@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Alert,
     ActivityIndicator,
-    Modal
+    Modal,
+    ScrollView
 } from 'react-native';
 
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
@@ -84,6 +85,7 @@ export default function Login() {
     };
 
     return (
+        <ScrollView>
         <View style={style.container}>
             <View style={style.posTop}>
                 <Image 
@@ -167,5 +169,6 @@ export default function Login() {
                 </View>
             </Modal>
         </View>
+        </ScrollView>
     );
 }

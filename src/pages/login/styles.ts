@@ -1,5 +1,5 @@
 
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { themas } from "../../global/themes";
 
 
@@ -11,18 +11,18 @@ export const style = StyleSheet.create({
         backgroundColor: themas.colors.background
     },
     posTop:{
-        height:'30%',
+        height: Dimensions.get('screen').height / 3.5,
         width:'100%',   
         alignItems:'center',
         justifyContent: 'center',
     },
     posMid:{
-        height:'35%',
+        height: Dimensions.get('screen').height / 2.5,
         width:'100%',
         
     },
     posBottom:{
-        height:'35%',
+        height:Dimensions.get('screen').height / 4,
         width:'100%',
         alignItems:'center',
     },
